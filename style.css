@@ -1,0 +1,55 @@
+@charset "UTF-8";
+/*
+Theme Name: Benner Test
+Author: Rodrigo Eto
+*/
+.content {
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	margin-top: 25vh;
+}
+.content .container {
+	max-width: 600px;
+}
+.microondas {
+	display: flex;
+	flex-direction: column;
+}
+.microondas .keyboard {
+	display: grid;
+	grid-template-areas: "btn7 btn8 btn9" "btn4 btn5 btn6" "btn1 btn2 btn3" "btn0 btnAqc btnAqc";
+}
+.microondas .keyboard #btnAqc {
+	grid-area: btnAqc;
+}
+.microondas .keyboard #btn0 {
+	grid-area: btn0;
+}
+.microondas .keyboard #btn1 {
+	grid-area: btn1;
+}
+.microondas .keyboard #btn2 {
+	grid-area: btn2;
+}
+.microondas .keyboard #btn3 {
+	grid-area: btn3;
+}
+.microondas .keyboard #btn4 {
+	grid-area: btn4;
+}
+.microondas .keyboard #btn5 {
+	grid-area: btn5;
+}
+.microondas .keyboard #btn6 {
+	grid-area: btn6;
+}
+.microondas .keyboard #btn7 {
+	grid-area: btn7;
+}
+.microondas .keyboard #btn8 {
+	grid-area: btn8;
+}
+.microondas .keyboard #btn9 {
+	grid-area: btn9;
+}
