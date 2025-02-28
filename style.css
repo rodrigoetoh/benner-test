@@ -16,9 +16,27 @@ Author: Rodrigo Eto
 	display: flex;
 	flex-direction: column;
 }
+.microondas .inputs {
+	display: flex;
+}
+.microondas .visor-container {
+
+}
+.microondas .visor-container #visor {
+	display: none;
+}
+.microondas.microondas-funcionando .visor-container #visor {
+	display: block;
+}
+.microondas.microondas-funcionando .visor-container #timer {
+	display: none;
+}
 .microondas .keyboard {
 	display: grid;
-	grid-template-areas: "btn7 btn8 btn9" "btn4 btn5 btn6" "btn1 btn2 btn3" "btn0 btnAqc btnAqc";
+	grid-template-areas: "btn7 btn8 btn9" "btn4 btn5 btn6" "btn1 btn2 btn3" "btnCanc btn0 btnAqc";
+}
+.microondas .keyboard #btnCanc {
+	grid-area: btnCanc;
 }
 .microondas .keyboard #btnAqc {
 	grid-area: btnAqc;

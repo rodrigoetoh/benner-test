@@ -2,11 +2,15 @@
 
 <main class="content">
 	<div class="container">
-		<form action="<?= esc_url(admin_url('admin-ajax.php')); ?>" method="POST">
+		<div id="debug"></div>
+		<form class="form form-ajax" action="<?= esc_url(admin_url('admin-ajax.php')); ?>" method="POST">
 			<input type="hidden" name="action" value="microondas_post">
 			<div class="microondas">
 				<div class="inputs">
-					<input id="timer" type="text" name="timer" placeholder="Timer">
+					<div class="visor-container">
+						<input id="visor" type="text" placeholder="00:00" disabled>
+						<input id="timer" type="text" name="timer" placeholder="Timer">
+					</div>
 					<input id="potencia" type="text" name="potencia" placeholder="Potência">
 				</div>
 				<div class="keyboard">
@@ -19,6 +23,7 @@
 					<button id="btn1" type="button" data-add_time="1">1</button>
 					<button id="btn2" type="button" data-add_time="2">2</button>
 					<button id="btn3" type="button" data-add_time="3">3</button>
+					<button id="btnCanc" type="button">Cancelar</button>
 					<button id="btn0" type="button" data-add_time="0">0</button>
 					<button id="btnAqc" type="submit">Aquecimento (+30s)</button>
 				</div>
