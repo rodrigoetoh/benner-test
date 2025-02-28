@@ -1,8 +1,16 @@
+<?php
+
+?>
 <?php get_header(); ?>
 
+<script type="text/javascript">
+	var jsonProgramas = <?php echo json_encode($programasPreDefinidos) ?>
+</script>
 <main class="content">
 	<div class="container">
 		<div id="debug"></div>
+	</div>
+	<div class="container">
 		<form class="form form-ajax" action="<?= esc_url(admin_url('admin-ajax.php')); ?>" method="POST">
 			<input type="hidden" name="action" value="microondas_post">
 			<div class="microondas">
@@ -28,6 +36,29 @@
 					<button id="btnAqc" type="submit">Aquecimento (+30s)</button>
 				</div>
 				<div class="status"></div>
+			</div>
+		</form>
+		<form class="form form-ajax" action="<?= esc_url(admin_url('admin-ajax.php')); ?>" method="POST">
+			<input type="hidden" name="action" value="microondas_program_post">
+			<div class="programas">
+				<ul>
+				<?php foreach ($programasPreDefinidos as $p): ?>
+					<li>
+						<div class="programa" data-html="<?php echo htmlentities(sprintf('<div>
+								<p>Alimento: %s</p>
+								<p>Instruções: %s</p>
+							</div>', $p->getFoodDescription(), $p->getInstructions())) ?>">
+							<p>
+								<label data-programa="<?php echo $p->getSanitizedTitle() ?>">
+									<input type="radio" name="programa" value="<?php echo $p->getSanitizedTitle() ?>">
+									<?php echo $p->getTitle() ?>
+								</label>
+							</p>
+						</div>
+					</li>
+				<?php endforeach ?>
+				</ul>
+				<div id="programaDescricao"></div>
 			</div>
 		</form>
 	</div>

@@ -1,9 +1,11 @@
 (function($) {
 	var microwaveWorkingStatus = false;
 	var microwavePausedStatus = false;
+	var microwaveIsProgram = false;
 	var microwaveTimer = 0;
 	var microwavePotency = 0;
 	var microwaveTimeout;
+	var microwaveString = '.';
 	function updateDebug(){
 		// $('#debug').html('microwaveWorkingStatus: ' + microwaveWorkingStatus
 		//  + '<br>microwavePausedStatus: ' + microwavePausedStatus
@@ -63,6 +65,11 @@
 							microwaveSetup(response.args);
 							microwaveResetStatus();
 							microwaveStart();
+						} else if(response.action == 'microwave_program_setup') {
+							microwaveSetup(response.args);
+							microwaveProgramSetup();
+							microwaveResetStatus();
+							microwaveStart();
 						}
 					}
 				},
@@ -75,22 +82,32 @@
 	function microwaveReset() {
 		microwaveWorkingStatus = false;
 		microwavePausedStatus = false;
+		microwaveIsProgram = false;
 		microwaveTimer = 0;
 		microwavePotency = 0;
+		microwaveString = '.';
 		$('.microondas').removeClass('microondas-funcionando');
 		$('#timer').val('');
 		$('#potencia').val('');
 		$('#potencia').prop('disabled', false);
 		$('[data-add_time]').prop('disabled', false);
+		$('#btnAqc').prop('disabled', false);
 	}
 	function microwaveSetup(args) {
 		microwaveVisorSetup(args.formatted_timer);
 		microwaveTimer = args.timer;
 		microwavePotency = args.potency_factor;
+		if(typeof args.custom_character != 'undefined') {
+			microwaveString = args.custom_character;
+		}
 		$('#timer').val(microwaveTimer);
 		$('#potencia').val(microwavePotency);
 		$('#potencia').prop('disabled', true);
 		$('[data-add_time]').prop('disabled', true);
+	}
+	function microwaveProgramSetup() {
+		microwaveIsProgram = true;
+		$('#btnAqc').prop('disabled', true);
 	}
 	function microwaveStart() {
 		$('.microondas').addClass('microondas-funcionando');
@@ -113,7 +130,7 @@
 		}
 	}
 	function microwaveUpdateStatus() {
-		var html = $('.status').html() + ('.'.repeat(microwavePotency)) + ' ';
+		var html = $('.status').html() + (microwaveString.repeat(microwavePotency)) + ' ';
 		if(microwaveTimer < 1) {
 			html = $('.status').html() + ' Aquecimento concluído';
 		}
@@ -125,4 +142,14 @@
 	function microwaveVisorSetup(formattedTime) {
 		$('#visor').val(formattedTime);
 	}
+
+	$('.programas .programa').on('mouseenter', function(){
+		var e = $(this);
+		$('#programaDescricao').html(e.data('html'));
+	});
+
+	$('.programas [data-programa] input').on('click', function(){
+		var e = $(this);
+		$('.programas').parent('.form').submit();
+	});
 }(jQuery));

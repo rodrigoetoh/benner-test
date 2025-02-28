@@ -10,12 +10,18 @@ Author: Rodrigo Eto
 	margin-top: 25vh;
 }
 .content .container {
-	max-width: 400px;
-	width: 400px;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+}
+.content .form {
+
 }
 .microondas {
 	display: flex;
 	flex-direction: column;
+	max-width: 400px;
+	width: 400px;
 }
 .microondas .inputs {
 	display: flex;
@@ -71,4 +77,8 @@ Author: Rodrigo Eto
 }
 .microondas .keyboard #btn9 {
 	grid-area: btn9;
+}
+.programas {
+	max-width: 250px;
+	width: 250px;
 }
