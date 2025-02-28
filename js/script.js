@@ -78,9 +78,10 @@
 		microwaveTimer = 0;
 		microwavePotency = 0;
 		$('.microondas').removeClass('microondas-funcionando');
-		$('#potencia').prop('disabled', false);
 		$('#timer').val('');
 		$('#potencia').val('');
+		$('#potencia').prop('disabled', false);
+		$('[data-add_time]').prop('disabled', false);
 	}
 	function microwaveSetup(args) {
 		microwaveVisorSetup(args.formatted_timer);
@@ -89,6 +90,7 @@
 		$('#timer').val(microwaveTimer);
 		$('#potencia').val(microwavePotency);
 		$('#potencia').prop('disabled', true);
+		$('[data-add_time]').prop('disabled', true);
 	}
 	function microwaveStart() {
 		$('.microondas').addClass('microondas-funcionando');
