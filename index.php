@@ -1,11 +1,8 @@
 <?php
-
+	$programas = getAllMicrowavePrograms();
 ?>
 <?php get_header(); ?>
 
-<script type="text/javascript">
-	var jsonProgramas = <?php echo json_encode($programasPreDefinidos) ?>
-</script>
 <main class="content">
 	<div class="container">
 		<div id="debug"></div>
@@ -42,7 +39,7 @@
 			<input type="hidden" name="action" value="microondas_program_post">
 			<div class="programas">
 				<ul>
-				<?php foreach ($programasPreDefinidos as $p): ?>
+				<?php foreach ($programas as $p): ?>
 					<li>
 						<div class="programa" data-html="<?php echo htmlentities(sprintf('<div>
 								<p>Alimento: %s</p>
@@ -51,17 +48,78 @@
 							<p>
 								<label data-programa="<?php echo $p->getSanitizedTitle() ?>">
 									<input type="radio" name="programa" value="<?php echo $p->getSanitizedTitle() ?>">
-									<?php echo $p->getTitle() ?>
+									<span>
+										<?php if (!$p->isDefaultProgram()): ?>
+											<i><?php echo $p->getTitle() ?></i>
+										<?php else: ?>
+											<?php echo $p->getTitle() ?>
+										<?php endif ?>
+									</span>
 								</label>
 							</p>
 						</div>
 					</li>
 				<?php endforeach ?>
 				</ul>
+				<a href="#cadastro" rel="modal:open">
+					<button id="btnCadastroNovo" type="button">Cadastrar Novo Programa</button>
+				</a>
 				<div id="programaDescricao"></div>
 			</div>
 		</form>
 	</div>
 </main>
+
+<div id="cadastro" class="modal">
+	<form class="form form-ajax" action="<?= esc_url(admin_url('admin-ajax.php')); ?>" method="POST">
+		<input type="hidden" name="action" value="microondas_new_program_post">
+
+		<div>
+			<label for="new_title">Nome</label>
+			<div>
+				<input id="new_title" type="text" name="title" required>
+			</div>
+		</div>
+
+		<div>
+			<label for="new_food_description">Alimento</label>
+			<div>
+				<input id="new_food_description" type="text" name="food_description" required>
+			</div>
+		</div>
+
+		<div>
+			<label for="new_timer">Tempo (em segundos)</label>
+			<div>
+				<input id="new_timer" type="text" name="timer" required>
+			</div>
+		</div>
+
+		<div>
+			<label for="new_potency">Potência (Preencha de 1 até 10)</label>
+			<div>
+				<input id="new_potency" type="text" name="potency" required>
+			</div>
+		</div>
+
+		<div>
+			<label for="new_instructions">Instruções</label>
+			<div>
+				<textarea id="new_instructions" name="instructions"></textarea>
+			</div>
+		</div>
+
+		<div>
+			<label for="new_custom_heating_character">Caractere customizado (1 caractere apenas)</label>
+			<div>
+				<input id="new_custom_heating_character" type="text" name="custom_heating_character" required>
+			</div>
+		</div>
+
+
+  		<button type="submit">Cadastrar</button>
+  		<a href="#" rel="modal:close">Cancelar</a>
+	</form>
+</div>
 
 <?php get_footer();

@@ -65,6 +65,8 @@
 							microwaveSetup(response.args);
 							microwaveResetStatus();
 							microwaveStart();
+						} else if(response.action == 'microwave_new_program_register') {
+							window.location.reload();
 						} else if(response.action == 'microwave_program_setup') {
 							microwaveSetup(response.args);
 							microwaveProgramSetup();
