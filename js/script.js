@@ -1,24 +1,29 @@
 (function($) {
 	var microwaveWorkingStatus = false;
 	var microwavePausedStatus = false;
+	var microwaveTimer = 0;
+	var microwavePotency = 0;
+	var microwaveTimeout;
 	function updateDebug(){
-		$('#debug').html('microwaveWorkingStatus: ' + microwaveWorkingStatus + '<br>microwavePausedStatus: ' + microwavePausedStatus);
+		// $('#debug').html('microwaveWorkingStatus: ' + microwaveWorkingStatus
+		//  + '<br>microwavePausedStatus: ' + microwavePausedStatus
+		//  + '<br>microwaveTimer: ' + microwaveTimer
+		//  + '<br>microwavePotency: ' + microwavePotency
+		// );
 	}
 
 	$('#btnCanc').on('click', function(){
 		if(microwavePausedStatus) {
-			microwaveWorkingStatus = false;
-			microwavePausedStatus = false;
-			$('.microondas').removeClass('microondas-funcionando');
-			$('#potencia').prop('disabled', false);
-			$('#timer').val('');
-			$('#potencia').val('');
+			microwaveReset();
+			$('.status').html('');
 		} else if(microwaveWorkingStatus) {
 			microwaveWorkingStatus = false;
 			microwavePausedStatus = true;
+			clearTimeout(microwaveTimeout);
 		} else {
 			$('#timer').val('');
 			$('#potencia').val('');
+			microwaveResetStatus();
 		}
 		updateDebug();
 	});
@@ -26,15 +31,16 @@
 		if(microwavePausedStatus) {
 			microwavePausedStatus = false;
 			microwaveWorkingStatus = true;
-			alert('resume');
+			microwaveRun();
 		} else if(microwaveWorkingStatus) {
-			alert('add 30s');
+			microwaveTimer += 30;
 		}
 		updateDebug();
 	});
 	$('[data-add_time]').on('click', function(e){
 		var e = $(this);
 		$('#timer').val($('#timer').val().toString().concat(e.data('add_time')));
+		microwaveResetStatus();
 	});
 
 	$('.form-ajax').on('submit', function(e){
@@ -54,9 +60,10 @@
 					}
 					if(response.action != false) {
 						if(response.action == 'microwave_start') {
-							microwaveStart(response.args);
+							microwaveSetup(response.args);
+							microwaveResetStatus();
+							microwaveStart();
 						}
-
 					}
 				},
 			};
@@ -65,16 +72,53 @@
 		}
 	});
 
-	function microwaveStart(args) {
-		$('.microondas').addClass('microondas-funcionando');
-		microwaveWorkingStatus = true;
+	function microwaveReset() {
+		microwaveWorkingStatus = false;
+		microwavePausedStatus = false;
+		microwaveTimer = 0;
+		microwavePotency = 0;
+		$('.microondas').removeClass('microondas-funcionando');
+		$('#potencia').prop('disabled', false);
+		$('#timer').val('');
+		$('#potencia').val('');
+	}
+	function microwaveSetup(args) {
 		microwaveVisorSetup(args.formatted_timer);
-		var timer = args.timer;
-		var potencia = args.potency_factor;
-		$('#potencia').val(potencia);
+		microwaveTimer = args.timer;
+		microwavePotency = args.potency_factor;
+		$('#timer').val(microwaveTimer);
+		$('#potencia').val(microwavePotency);
 		$('#potencia').prop('disabled', true);
-		// alert('potencia: ' +potencia);
+	}
+	function microwaveStart() {
+		$('.microondas').addClass('microondas-funcionando');
+		microwavePausedStatus = false;
+		microwaveWorkingStatus = true;
+		microwaveRun();
 		updateDebug();
+	}
+	function microwaveRun() {
+		if(microwaveTimer > 0) {
+			microwaveTimeout = setTimeout(function(){
+				microwaveUpdateStatus();
+				microwaveTimer--;
+				microwaveRun();
+				updateDebug();
+			}, 1000);
+		} else {
+			microwaveReset();
+			microwaveUpdateStatus();
+		}
+	}
+	function microwaveUpdateStatus() {
+		var html = $('.status').html() + ('.'.repeat(microwavePotency)) + ' ';
+		if(microwaveTimer < 1) {
+			html = $('.status').html() + ' Aquecimento concluído';
+		}
+		$('.status').html(html);
+	}
+	function microwaveResetStatus() {
+		$('.status').html('');
 	}
 	function microwaveVisorSetup(formattedTime) {
 		$('#visor').val(formattedTime);

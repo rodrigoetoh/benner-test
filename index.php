@@ -27,6 +27,7 @@
 					<button id="btn0" type="button" data-add_time="0">0</button>
 					<button id="btnAqc" type="submit">Aquecimento (+30s)</button>
 				</div>
+				<div class="status"></div>
 			</div>
 		</form>
 	</div>

@@ -10,7 +10,8 @@ Author: Rodrigo Eto
 	margin-top: 25vh;
 }
 .content .container {
-	max-width: 600px;
+	max-width: 400px;
+	width: 400px;
 }
 .microondas {
 	display: flex;
