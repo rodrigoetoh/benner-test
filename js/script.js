@@ -22,6 +22,9 @@
 			microwaveWorkingStatus = false;
 			microwavePausedStatus = true;
 			clearTimeout(microwaveTimeout);
+			if(microwaveIsProgram) {
+				$('#btnAqc').prop('disabled', false);
+			}
 		} else {
 			$('#timer').val('');
 			$('#potencia').val('');
@@ -34,6 +37,9 @@
 			microwavePausedStatus = false;
 			microwaveWorkingStatus = true;
 			microwaveRun();
+			if(microwaveIsProgram) {
+				$('#btnAqc').prop('disabled', true);
+			}
 		} else if(microwaveWorkingStatus) {
 			microwaveTimer += 30;
 		}
